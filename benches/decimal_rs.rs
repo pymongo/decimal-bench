@@ -63,6 +63,13 @@ pub fn decimal_rs_into_u64(bench: &mut Bencher) {
     })
 }
 
+pub fn decimal_rs_trunc_with_scale(bench: &mut Bencher) {
+    let v = parse("123456.7890123456789");
+    bench.iter(|| {
+        black_box(v.trunc(5))
+    })
+}
+
 pub fn decimal_rs_cmp(bench: &mut Bencher) {
     let x = parse("12345678901.23456789");
     let y = parse("123456.7890123456789");

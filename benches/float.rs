@@ -17,55 +17,56 @@
 #![allow(clippy::excessive_precision)]
 
 use bencher::{black_box, Bencher};
-use num_traits::{FromPrimitive, ToPrimitive};
-use rust_decimal::{Decimal, MathematicalOps};
+// use num_traits::{FromPrimitive, ToPrimitive};
+// use rust_decimal::{Decimal, MathematicalOps};
 
 #[inline(always)]
-fn parse(s: &str) -> Decimal {
+fn parse(s: &str) -> f64 {
     s.parse().unwrap()
 }
 
-pub fn rust_decimal_parse(bench: &mut Bencher) {
+pub fn float_parse(bench: &mut Bencher) {
     bench.iter(|| {
         let _n = parse(black_box("12345678901.23456789"));
     })
 }
 
-pub fn rust_decimal_to_string(bench: &mut Bencher) {
+pub fn float_to_string(bench: &mut Bencher) {
     let val = parse("12345678901.23456789");
     bench.iter(|| {
         let _n = black_box(&val).to_string();
     })
 }
 
-pub fn rust_decimal_into_f64(bench: &mut Bencher) {
+pub fn float_into_f64(bench: &mut Bencher) {
     let val = parse("12345678901.23456789");
     bench.iter(|| {
-        let _n: f64 = black_box(&val).to_f64().unwrap();
+        let _n: f64 = *black_box(&val);
     })
 }
 
-pub fn rust_decimal_into_u64(bench: &mut Bencher) {
+pub fn float_into_u64(bench: &mut Bencher) {
     let val = parse("12345678901.23456789");
     bench.iter(|| {
-        let _n: u64 = black_box(&val).to_u64().unwrap();
+        let _n: u64 = *black_box(&val) as u64;
     })
 }
 
-pub fn rust_decimal_from_f64(bench: &mut Bencher) {
+pub fn float_from_f64(bench: &mut Bencher) {
     bench.iter(|| {
-        let _n = Decimal::from_f64(black_box(12345678901.23456789_f64)).unwrap();
+        // let _n = Decimal::from_f64(black_box(12345678901.23456789_f64)).unwrap();
     })
 }
 
-pub fn rust_decimal_trunc_with_scale(bench: &mut Bencher) {
+pub fn float_trunc_with_scale(bench: &mut Bencher) {
     let v = parse("123456.7890123456789");
     bench.iter(|| {
-        black_box(v.trunc_with_scale(5))
+        // black_box((v * 10000.0).round() / 10000.0)
+        black_box((v * 10000.0).trunc() / 10000.0)
     })
 }
 
-pub fn rust_decimal_cmp(bench: &mut Bencher) {
+pub fn float_cmp(bench: &mut Bencher) {
     let x = parse("12345678901.23456789");
     let y = parse("123456.7890123456789");
     bench.iter(|| {
@@ -73,7 +74,7 @@ pub fn rust_decimal_cmp(bench: &mut Bencher) {
     })
 }
 
-pub fn rust_decimal_cmp2(bench: &mut Bencher) {
+pub fn float_cmp2(bench: &mut Bencher) {
     let x = parse("12345678901.234567");
     let y = parse("123456.789012");
     bench.iter(|| {
@@ -82,11 +83,11 @@ pub fn rust_decimal_cmp2(bench: &mut Bencher) {
 }
 
 #[inline(always)]
-fn add(x: &Decimal, y: &Decimal) -> Decimal {
+fn add(x: &f64, y: &f64) -> f64 {
     x + y
 }
 
-pub fn rust_decimal_add(bench: &mut Bencher) {
+pub fn float_add(bench: &mut Bencher) {
     let x = parse("12345678901.23456789");
     let y = parse("123456.7890123456789");
     bench.iter(|| {
@@ -95,11 +96,11 @@ pub fn rust_decimal_add(bench: &mut Bencher) {
 }
 
 #[inline(always)]
-fn sub(x: &Decimal, y: &Decimal) -> Decimal {
+fn sub(x: &f64, y: &f64) -> f64 {
     x - y
 }
 
-pub fn rust_decimal_sub(bench: &mut Bencher) {
+pub fn float_sub(bench: &mut Bencher) {
     let x = parse("12345678901.23456789");
     let y = parse("123456.7890123456789");
     bench.iter(|| {
@@ -108,11 +109,11 @@ pub fn rust_decimal_sub(bench: &mut Bencher) {
 }
 
 #[inline(always)]
-fn mul(x: &Decimal, y: &Decimal) -> Decimal {
+fn mul(x: &f64, y: &f64) -> f64 {
     x * y
 }
 
-pub fn rust_decimal_mul(bench: &mut Bencher) {
+pub fn float_mul(bench: &mut Bencher) {
     let x = parse("12345678901.23456789");
     let y = parse("123456.7890123456789");
     bench.iter(|| {
@@ -121,11 +122,11 @@ pub fn rust_decimal_mul(bench: &mut Bencher) {
 }
 
 #[inline(always)]
-fn div(x: &Decimal, y: &Decimal) -> Decimal {
+fn div(x: &f64, y: &f64) -> f64 {
     x / y
 }
 
-pub fn rust_decimal_div(bench: &mut Bencher) {
+pub fn float_div(bench: &mut Bencher) {
     let x = parse("12345678901.23456789");
     let y = parse("123456.7890123456789");
     bench.iter(|| {
@@ -133,9 +134,9 @@ pub fn rust_decimal_div(bench: &mut Bencher) {
     })
 }
 
-pub fn rust_decimal_sqrt(bench: &mut Bencher) {
+pub fn float_sqrt(bench: &mut Bencher) {
     let x = parse("12345678901.23456789");
     bench.iter(|| {
-        let _n = black_box(&x).sqrt().unwrap();
+        let _n = black_box(&x).sqrt();
     })
 }
