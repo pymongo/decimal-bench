@@ -60,9 +60,7 @@ pub fn rust_decimal_from_f64(bench: &mut Bencher) {
 
 pub fn rust_decimal_trunc_with_scale(bench: &mut Bencher) {
     let v = parse("123456.7890123456789");
-    bench.iter(|| {
-        black_box(v.trunc_with_scale(5))
-    })
+    bench.iter(|| black_box(v.trunc_with_scale(5)))
 }
 
 pub fn rust_decimal_cmp(bench: &mut Bencher) {

@@ -14,15 +14,15 @@
 
 mod bigdecimal;
 mod decimal_rs;
+mod float;
 mod pgnumeric;
 mod rust_decimal;
-mod float;
 
 use crate::bigdecimal::*;
 use crate::decimal_rs::*;
+use crate::float::*;
 use crate::pgnumeric::*;
 use crate::rust_decimal::*;
-use crate::float::*;
 
 use bencher::{benchmark_group, benchmark_main};
 
@@ -96,6 +96,7 @@ benchmark_group!(
     float_benches,
     float_parse,
     float_to_string,
+    float_ryu_to_string,
     float_into_f64,
     float_from_f64,
     float_into_u64,
@@ -111,7 +112,7 @@ benchmark_group!(
 
 benchmark_main!(
     // bigdecimal_benches,
-    decimal_rs_benches,
+    // decimal_rs_benches,
     // pgnumeric_benches,
     rust_decimal_benches,
     float_benches
